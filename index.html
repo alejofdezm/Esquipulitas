@@ -632,46 +632,45 @@
                             </div>
                             <div class="inner-box">
                                 <div class="icon-box"><i class="flaticon-phone-call"></i></div>
-                                <h3>¿Necesitás ayuda?</h3>
-                                <form action="index.html" method="post">
-                                    <div class="form-group">
-                                        <div class="icon"><i class="fa-solid fa-phone-flip"></i></div>
-                                        <input type="text" name="phone" placeholder="ingresa tu teléfono" required="">
-                                        <button type="submit"><i class="flaticon-right-arrow"></i></button>
-                                    </div>
-                                </form>
+                                <h3>¿Necesitás ayuda? llamanos al </br><a href="tel:+50661816840">+506 6181-6840</a></h3>                                    
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12 inner-column">
                         <div class="inner-content">
                             <div class="form-inner">
-                                <form action="index.html" method="post">
+                                <form method="post" action="https://formspree.io/f/xpqqqrrr" id="contact-form"> 
                                     <div class="row clearfix">
                                         <div class="col-lg-12 col-md-12 col-sm-12 form-group">
                                             <i class="fa-solid fa-circle-user"></i>
                                             <label>Nombre completo</label>
-                                            <input type="text" name="name"  required="">
+                                            <input type="text" name="Nombre completo"  required="">
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 form-group">
                                             <i class="fa-solid fa-envelope"></i>
                                             <label>Email</label>
-                                            <input type="email" name="email" required="">
+                                            <input type="email" name="Email" required="">
                                         </div>
-                                        <div class="col-lg-6 col-md-12 col-sm-12 form-group">
-                                            <i class="fa-solid fa-calendar-check"></i>
-                                            <label>Día cita</label>
-                                            <input type="text" name="date" id="datepicker">
+                                       <div class="row clearfix">
+                                                <div class="col-lg-6 col-md-12 col-sm-12 form-group">
+                                                    <label>Día cita</label>
+                                                    <input type="text" name="Programar cita" id="datepicker" placeholder="Seleccionar Fecha" required="" readonly style="background-color: #fff;">
+                                                    <i class="fa-solid fa-calendar-days"></i> 
+                                                </div>
+
+                                                <div class="col-lg-6 col-md-12 col-sm-12 form-group">
+                                                        <label>Hora</label>
+                                                        <input type="time" name="Hora de cita" required="">
+                                                    </div>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-12 col-sm-12 form-group">
-                                            <i class="fa-solid fa-clock"></i>
-                                            <label>Hora</label>
-                                            <input type="text" name="time">
-                                        </div>
+                                        <label style="display:none;">Si ves esto, no lo llenes: 
+                                            <input type="text" name="_gotcha" style="display:none;">
+                                        </label>
                                         <div class="col-lg-12 col-md-12 col-sm-12 form-group">
                                             <label>Tipo de servicio</label>
                                             <div class="select-box">
-                                                <select class="selectmenu">
+                                                <select class="selectmenu" name="Motivo de cita">
                                                     <option selected="selected">Seleccione una opción</option>
                                                     <option>Consulta General</option>
                                                     <option>Cotizar Paquetes / Exámenes</option>
@@ -823,6 +822,32 @@
         
     </div>
 
+   <script>
+  var form = document.getElementById("contact-form");
+  
+  form.addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita que la página se recargue
+    
+    var data = new FormData(event.target);
+    fetch(event.target.action, {
+      method: 'POST',
+      body: data,
+      headers: {
+          'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        // AQUÍ ES DONDE APARECE TU MENSAJE DE CONFIRMACIÓN
+        alert("¡Cita programada con éxito! Nos pondremos en contacto pronto.");
+        form.reset(); // Limpia el formulario
+      } else {
+        alert("Hubo un error al enviar. Por favor, intente de nuevo.");
+      }
+    }).catch(error => {
+      alert("Error de conexión. Verifique su internet.");
+    });
+  });
+</script>
 
     <!-- jequery plugins -->
     <script src="assets/js/jquery.js"></script>
@@ -842,6 +867,40 @@
 
     <!-- main-js -->
     <script src="assets/js/script.js"></script>
+         
+
+
+<script>
+  $(document).ready(function() {
+    // 1. Inicializar Calendario
+    if ($("#datepicker").length) {
+        $("#datepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            minDate: 0,
+            dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
+            monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        });
+    }
+
+    // 2. Inicializar Selector de Hora (Librería de la plantilla)
+    if ($("#timepicker").length) {
+        $("#timepicker").timePicker({
+            startTime: "07:00",  // Hora inicio
+            endTime: "16:00",    // Hora fin
+            show24Hours: false,
+            separator: ':',
+            step: 30             // Intervalos de 30 minutos
+        });
+
+        // Forzar apertura al hacer clic si la librería no lo hace sola
+        $("#timepicker").on('click', function() {
+            $(this).trigger('focus');
+        });
+    }
+  });
+</script>
+
+
 
 </body><!-- End of .page_wrapper -->
 </html>
